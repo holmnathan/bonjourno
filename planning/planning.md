@@ -16,9 +16,9 @@
 ![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/edit-journal-entry.png)
 ### Edit Journal Date
 ![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/edit-journal-entry-date-selector.png)
-### Edit Journal Tags
-![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/edit-journal-entry-image.png)
 ### Edit Journal Image
+![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/edit-journal-entry-image.png)
+### Edit Journal Tags
 ![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/edit-journal-entry-tags.png)
 ### User Profile
 ![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/profile-changes.png)
@@ -26,8 +26,6 @@
 ![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/journal-view-guest.png)
 ### Edit Tags Library
 ![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/edit-tags-library.png)
-
----
 
 ## User Stories
 ### As a Guest
@@ -67,3 +65,6 @@
 - I want to upload a profile picture
 - I want to change or delete a previously uploaded profile picture
 - I want to permanently delete my account and articles
+
+## Database Structure
+![Home Page](https://github.com/nathanholm/bonjourno/blob/main/planning/images/database-relationships.png)
