@@ -1,0 +1,37 @@
+{
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "pg": "^8.5.1",
+    "sequelize": "^6.5.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "bonjourno",
+  "description": "Journaling App",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nathanholm/bonjourno.git"
+  },
+  "keywords": [
+    "journal",
+    "journaling",
+    "social-network",
+    "social-networking",
+    "article",
+    "self-reflection",
+    "blog",
+    "blogging"
+  ],
+  "author": "Nathan Holm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathanholm/bonjourno/issues"
+  },
+  "homepage": "https://github.com/nathanholm/bonjourno#readme"
+}
