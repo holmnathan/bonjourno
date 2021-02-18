@@ -1,6 +1,5 @@
-const db = require('./models')
-const async = require('async')
-
+const db = require('./models');
+const async = require('async');
 const run_image_source = async () => {
 
 const [source_name, source_created] = await db.image_source.findOrCreate({
@@ -41,6 +40,8 @@ const [image_source_name, image_source_created] = await db.image_source.findOrCr
 
 }
 
+//-----------------------------------------------------------------------------
+
 const run_user = async () => {
 
 const [user_name, user_created] = await db.user.findOrCreate({
@@ -57,32 +58,31 @@ const [user_name, user_created] = await db.user.findOrCreate({
 const [image_source, source_created] = await db.image_source.findOrCreate({
   where: {
     name: "cloudinary",
-    url: "http://www.cloudinary.com"
+    url: "https://res.cloudinary.com/"
   }
 });
  
 const [image_name, image_created] = await db.image.findOrCreate({
   where: {
-    source_value: "THIS IMAGE"
+    asset_id: "THIS IMAGE"
   }
 });
 
-const getMethods = (obj) => {
-  let properties = new Set()
-  let currentObj = obj
-  do {
-    Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
-  } while ((currentObj = Object.getPrototypeOf(currentObj)))
-  return [...properties.keys()].filter(item => typeof obj[item] === 'function')
-}
-
-console.log("------------------------------");
-console.log("Image Source Name: ", getMethods(image_name));
-console.log("Image Source Value: ", image_name.source_value);
-console.log("------------------------------\n\n\n");
+// const getMethods = (obj) => {
+//   let properties = new Set()
+//   let currentObj = obj
+//   do {
+//     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+//   } while ((currentObj = Object.getPrototypeOf(currentObj)))
+//   return [...properties.keys()].filter(item => typeof obj[item] === 'function')
+// }
+// 
+// console.log("------------------------------");
+// console.log("Image Source Name: ", getMethods(image_name));
+// console.log("Image Source Value: ", image_name.source_value);
+// console.log("------------------------------\n\n\n");
 
 image_name.setImage_source(image_source);
-// 
 user_name.setImage(image_name);
 
   console.log("------------------------------");
@@ -97,19 +97,142 @@ user_name.setImage(image_name);
 
 }
 
-const testAssociation = async () => {
-  const result = await db.user.findOne({
-    where: { id: 3 },
-    include: db.image
-  });
-  
-  console.log(result.image.dataValues);
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+const run_journal = async () => {
+
+const [user_name, user_created] = await db.user.findOrCreate({
+  where: {
+  full_name: "Jonathan Appleseed",
+  display_name: "Johnny",
+  email: "johnny@appleseed.com",
+  birth_date: "1962-01-21",
+  password: "test",
+  username: "jseed".toLowerCase()
+}
+});
+
+const [journal_name, journal_created] = await db.journal_entry.findOrCreate({
+  where: {
+  body: "Johnny",
+  temperature_kelvin: 255,
+  weather: "Sunny"
+}
+});
+ 
+const [image_name, image_created] = await db.image.findOrCreate({
+  where: {
+    asset_id: "NEW AND EXCITING IMAGE"
+  }
+});
+
+// const getMethods = (obj) => {
+//   let properties = new Set()
+//   let currentObj = obj
+//   do {
+//     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+//   } while ((currentObj = Object.getPrototypeOf(currentObj)))
+//   return [...properties.keys()].filter(item => typeof obj[item] === 'function')
+// }
+// 
+// console.log("------------------------------");
+// console.log("Image Source Name: ", getMethods(image_name));
+// console.log("Image Source Value: ", image_name.source_value);
+// console.log("------------------------------\n\n\n");
+
+journal_name.setImage(image_name);
+user_name.addJournal_entry(journal_name);
+
+  console.log("------------------------------");
+  console.log("UUID: ", journal_name.id);
+  console.log("Name: ", user_name.full_name);
+  console.log("Journal Title: ", journal_name.title);
+  console.log("Journal Body: ", journal_name.body);
+  console.log("------------------------------");
+  console.log("Image Asset: ", image_name.asset_id);
+  console.log("------------------------------");
+
 }
 
+//-----------------------------------------------------------------------------
+
+const testAssociation = async () => {
+  const result = await db.image.findOne({
+    where: { id: "ThVirZM1sTk" },
+    include: [db.image_source]
+  });
+  
+  console.log(result.image_source.dataValues);
+}
+
+const createUser = async () => {
+  try {
+    const new_user = await db.user.create({
+      full_name: "Jonathan Appleseed",
+      display_name: "Johnny",
+      email: "johnny@appleseed.com",
+      birth_date: "1962-01-21",
+      password: "test",
+      username: "jseed".toLowerCase(),
+    });
+    return {
+      success: true,
+      id: new_user.full_name
+    };
+  } catch (e) {
+    console.log('error creating user:', e);
+  }
+}
+
+const createImage = async () => {
+  try {
+    const new_image = await db.image.create({
+      asset_id: "asdfasdfasdf"
+      })
+      }
+      catch (e) {
+    console.log('error creating image:', e);
+  }
+}
+
+const bulkInsert = async () => {
+  await db.tag_color.bulkCreate([
+    {name: "red"},
+    {name: "orange"},
+    {name: "yellow"},
+    {name: "green"},
+    {name: "blue"},
+    {name: "purple"}
+  ])
+}
+
+const bulkTag = async () => {
+  const temp = await db.tag.create(
+    {
+      name: "Yoddy",
+      color: {
+        id: 3,
+        name: "yellow"
+      }
+    }, {
+      include: [{ association: db.tag_color, as: "color" }],
+    }
+  );
+}
+
+// bulkInsert();
+bulkTag();
+
+// createImage();
+// createUser();
+
 // run_image_source();
-run_user();
+// run_user();
+// run_journal();
 
 // testAssociation();
 
 
 // console.log(db.image_source);
+
