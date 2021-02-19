@@ -53,3 +53,5 @@ router.post("/sign-up", async (req, res) => {
     res.redirect("/sign-up");
   };
 });
+
+module.exports = router;

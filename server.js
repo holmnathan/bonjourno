@@ -18,7 +18,7 @@ const session = require("express-session");
 // Controllers
 //-----------------------------------------------------------------------------
 
-const auth_controller = require('./controllers/auth.js');
+const auth_controller = require("./controllers/auth.js");
 
 //-----------------------------------------------------------------------------
 // Middleware
