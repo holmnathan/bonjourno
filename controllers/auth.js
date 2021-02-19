@@ -6,10 +6,11 @@
 
 require("dotenv").config(); // Load “.env” Environment Variables
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-
-const database  = require('../models');
+const database  = require("../models");
+// require the passport configuration at the top of the file
+const passport = require("../config/passport-config");
 
 //-----------------------------------------------------------------------------
 // Routes
@@ -45,13 +46,22 @@ router.post("/sign-up", async (req, res) => {
     } else {
       // if not created, the email already exists
       console.log("Email already in use");
-      res.redirect("/sign-up");
+      res.redirect("/auth/sign-up");
     }
     
   } catch (error) {
     console.log("An error occurred: ", error.message);
-    res.redirect("/sign-up");
+    res.redirect("/auth/sign-up");
   };
 });
+
+router.get("/log-in", async (req, res) => {
+  res.render("log-in");
+})
+
+router.post("/log-in", passport.authenticate("local", {
+  successRedirect: "/",
+  failureRedirect: "/auth/log-in"
+}));
 
 module.exports = router;
