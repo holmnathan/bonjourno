@@ -46,27 +46,27 @@ const run_user = async () => {
 
 const [user_name, user_created] = await db.user.findOrCreate({
   where: {
-  full_name: "Jonathan Appleseed",
-  display_name: "Johnny",
-  email: "johnny@appleseed.com",
-  birth_date: "1962-01-21",
+  full_name: "Jenny Miller",
+  display_name: "Jenny",
+  email: "jenny@miller.com",
+  birth_date: "1965-02-21",
   password: "test",
-  username: "jseed".toLowerCase()
+  username: "jennymill".toLowerCase()
 }
 });
 
-const [image_source, source_created] = await db.image_source.findOrCreate({
-  where: {
-    name: "cloudinary",
-    url: "https://res.cloudinary.com/"
-  }
-});
- 
-const [image_name, image_created] = await db.image.findOrCreate({
-  where: {
-    asset_id: "THIS IMAGE"
-  }
-});
+// const [image_source, source_created] = await db.image_source.findOrCreate({
+//   where: {
+//     name: "cloudinary",
+//     url: "https://res.cloudinary.com/"
+//   }
+// });
+//  
+// const [image_name, image_created] = await db.image.findOrCreate({
+//   where: {
+//     asset_id: "THIS IMAGE"
+//   }
+// });
 
 // const getMethods = (obj) => {
 //   let properties = new Set()
@@ -82,8 +82,8 @@ const [image_name, image_created] = await db.image.findOrCreate({
 // console.log("Image Source Value: ", image_name.source_value);
 // console.log("------------------------------\n\n\n");
 
-image_name.setImage_source(image_source);
-user_name.setImage(image_name);
+// image_name.setImage_source(image_source);
+// user_name.setImage(image_name);
 
   console.log("------------------------------");
   console.log("UUID: ", user_name.id);
@@ -222,13 +222,13 @@ const bulkTag = async () => {
 }
 
 // bulkInsert();
-bulkTag();
+// bulkTag();
 
 // createImage();
 // createUser();
 
 // run_image_source();
-// run_user();
+run_user();
 // run_journal();
 
 // testAssociation();
