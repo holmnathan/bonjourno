@@ -1,0 +1,41 @@
+.entry-card {
+  border: 1px solid black;
+}
+
+.tag-list {
+  display: flex;
+  padding: 0;
+}
+
+.tag {
+  padding: .5em .75em;
+  margin-right: .5em;
+  background: gray;
+  border-radius: 2em;
+  list-style: none;
+  border: 1px solid #000000;
+  }
+
+.tag-red {
+  background: #FF4F4C;
+}
+
+.tag-orange {
+  background: #FEAD46;
+}
+
+.tag-yellow {
+  background: #FDEC3F;
+}
+
+.tag-green {
+  background: #46FE81;
+}
+
+.tag-blue {
+  background: #4E7FFF;
+}
+
+.tag-purple {
+  background: #B148FF;
+}

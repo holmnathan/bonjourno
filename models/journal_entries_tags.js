@@ -10,8 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // this.hasMany(models.journal_entry, { foreignKey: "journal_entry_id" });
-      // this.hasMany(models.tag);
     }
   };
   journal_entries_tags.init({
@@ -19,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     tag_id: DataTypes.INTEGER
   }, {
     sequelize,
+    underscored: true,
     modelName: 'journal_entries_tags',
   });
   return journal_entries_tags;

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.image);
-      this.hasMany(models.journal_entry);
+      this.hasMany(models.journal_entry, {as: "entries"});
     }
     
     // Compares entered password to hashed password

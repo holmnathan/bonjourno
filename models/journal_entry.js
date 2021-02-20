@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.user);
       this.belongsTo(models.image);
-      // this.belongsToMany(models.tag, { through: "journal_entries_tags"});
+      this.belongsToMany(models.tag, { through: "journal_entries_tags"});
     }
   };
   journal_entry.init({

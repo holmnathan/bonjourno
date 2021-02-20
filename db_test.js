@@ -185,6 +185,22 @@ const createUser = async () => {
   }
 }
 
+const createJournal = async () => {
+  try {
+    const new_entry = await db.journal_entry.create({
+      title: "Vacation Pictures",
+      body: "I just went to the Bahamas and here are my thoughts about the Bahamas ",
+      user_id: "4"
+    });
+    return {
+      success: true,
+      id: new_entry.title
+    };
+  } catch (e) {
+    console.log('error creating user:', e);
+  }
+}
+
 const createImage = async () => {
   try {
     const new_image = await db.image.create({
@@ -226,9 +242,10 @@ const bulkTag = async () => {
 
 // createImage();
 // createUser();
+createJournal();
 
 // run_image_source();
-run_user();
+// run_user();
 // run_journal();
 
 // testAssociation();

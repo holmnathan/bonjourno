@@ -1,0 +1,17 @@
+<% if ( current_user && current_user.id === user.id ) { %>
+  <% console.log(current_user) %>
+<h2>Hi <%= user.display_name %></h2>
+<% } else { %>
+<h2><%= user.display_name %></h2>
+<% } %>
+<% for (entry of entries) { %>
+  <article class="entry-card">
+    <h3><%= entry.title %></h3>
+    <p><%= entry.body %></p>
+    <ul class="tag-list">
+      <% for (tag of entry.tags) { %>
+        <li class="tag tag-<%= tag.colors.name %>" ><%= tag.name %></li>
+      <% } %>
+    </ul>
+  </article>
+<% } %>
