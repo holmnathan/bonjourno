@@ -5,14 +5,21 @@
   <meta charset="utf-8">
   <meta name="author" content="Nathan Holm" />
 
+  <link rel="shortcut icon" type="image/jpg" href="/favicon.png"/>
   <!-- <link rel="stylesheet" href="￼" />
-  
   <script src="￼" defer></script> -->
   
-  <title></title>
+  
+  <% if ( typeof page_title !== "undefined" ) { %>
+    <title><%= page_title %> | bonjourno</title>
+  <% } else { %>
+    <title>bonjourno</title>
+  <% } %>
 </head>
 
 <body>
+  <%- include("partials/navigation") %>
   <%- body %>
+  <%- include("partials/alerts") %>
 </body>
 </html>

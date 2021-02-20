@@ -1,0 +1,23 @@
+<h2>Account</h2>
+<form>
+  <fieldset>
+    <legend>User Information</legend>
+    <label for="input-full-name">Full Name</label>
+    <input id="input-full-name" name="full_name" placeholder="<%= current_user.full_name %>" type="text" />  
+    <label for="input-display-name">Display Name</label>
+    <input id="input-display-name" name="display_name" placeholder="<%= current_user.display_name %>" type="text" />  
+    <label for="input-birth-date">Birth Date</label>
+    <input id="input-birth-date" name="birth_date" placeholder="<%= current_user.birth_date %>" type="date" />  
+  </fieldset>
+  <fieldset>
+    <legend>Credentials</legend>
+    <label for="input-username">Username</label>
+    <input id="input-username" name="username" placeholder="<%= current_user.username %>" type="text" />  
+    <label for="input-email">Email</label>
+    <input id="input-email" name="email" placeholder="<%= current_user.email %>" type="email" />  
+    <label for="input-password">Password</label>
+    <input id="input-password" name="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" type="password" />
+  </fieldset>
+  <a href="/<%= current_user.username %>">Cancel</a>
+  <button type="submit">Save</button>
+</form>

@@ -9,7 +9,6 @@ require("dotenv").config(); // Load “.env” Environment Variables
 const express = require("express");
 const router = express.Router();
 const database  = require("../models");
-// require the passport configuration at the top of the file
 const passport = require("../config/passport-config");
 
 //-----------------------------------------------------------------------------
@@ -33,35 +32,38 @@ router.post("/sign-up", async (req, res) => {
     });
     
     if (created) {
-      // if created, success and redirect home
-      console.log(`────────────────────────────────────────`);
-      console.log(` User Created:`);
-      console.log(`────────────────────────────────────────`);
-      console.log(` Full Name: ${user.full_name}`);
-      console.log(` Username: ${user.username}`);
-      console.log(` Email: ${user.email}`);
-      console.log(`────────────────────────────────────────`);
-      
+      passport.authenticate("local", {
+        successRedirect: "/",
+        successFlash: "Account created user signed in."
+      })
       res.redirect("/");
     } else {
       // if not created, the email already exists
-      console.log("Email already in use");
+      req.flash("error", "An account with this email address already exists.");
       res.redirect("/auth/sign-up");
     }
     
   } catch (error) {
-    console.log("An error occurred: ", error.message);
+    req.flash("error", error.message);;
     res.redirect("/auth/sign-up");
   };
 });
 
-router.get("/log-in", async (req, res) => {
-  res.render("log-in");
+router.get("/sign-in", (req, res) => {
+    res.render("sign-in");
 })
 
-router.post("/log-in", passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/auth/log-in"
+router.post("/sign-in", passport.authenticate("local", {
+  successRedirect: `/user`,
+  failureRedirect: "/auth/sign-in",
+  failureFlash: "Incorrect username or password.",
+  successFlash: "Welcome! You are now signed in."
 }));
+
+router.get("/sign-out", async (req, res) => {
+  req.logout();
+  req.flash("success", "You are now signed out.");
+  res.redirect("/");
+});
 
 module.exports = router;

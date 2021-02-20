@@ -13,13 +13,16 @@ const app = express();
 const appName = "bonjourno";
 const db = require("./models");
 const session = require("express-session");
-const passport = require('./config/passport-config');
+const passport = require("./config/passport-config");
+const flash = require("connect-flash");
+const authorized = require('./middleware/authorized');
 
 //-----------------------------------------------------------------------------
 // Controllers
 //-----------------------------------------------------------------------------
 
 const auth_controller = require("./controllers/auth.js");
+const user_controller = require("./controllers/user.js");
 
 //-----------------------------------------------------------------------------
 // Middleware
@@ -29,7 +32,9 @@ app.set("view engine", "ejs"); // Set layout engine for rendering files
 
 app.use(express.static(__dirname + "/public")); // Serve static files
 app.use(express.urlencoded({ extended: false }));
-app.use(express_layouts); //
+app.use(express_layouts);
+
+// Generate session
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -37,6 +42,14 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+
+app.use((req, res, next) => {
+  // before every route, attach the flash messages and current user to res.locals
+  res.locals.alerts = req.flash();
+  res.locals.current_user = req.user;
+  next();
+});
 
 //-----------------------------------------------------------------------------
 // Routes
@@ -47,6 +60,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/auth", auth_controller);
+app.use("/", user_controller);
 
 //-----------------------------------------------------------------------------
 // Listeners
