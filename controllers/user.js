@@ -21,52 +21,40 @@ router.get("/user", ( req, res, next ) => {
 
 router.get("/:username", async ( req, res ) => {
   let page_title;
+  let user;
+  console.log(req.query.date_sort);
   try {
-    const user = await database.user.findOne({
-      where: {
-        username: req.params.username
+    const entries = await database.journal_entry.findAll(
+      {
+        where: {
+          visible: true
         },
-      attributes: {
-        exclude: [
-          "password",
-          "birth_date",
-          "email"
-        ]
-      },
-      include: [
-        {
-          model: database.journal_entry,
-          as: "entries",
-          where: {
-            visible: true
-          },
-          required: false,
-          attributes: [
-            "title",
-            "body",
-            "date_time"
-          ],
-          include: [
-            {
-              model: database.tag,
-              through: {
-                where: database.journal_entries_tags
-              },
-              include: [
-                {
-                  model: database.tag_color,
-                  as: "colors"
-                }
-              ]
+        order: [
+          ["date_time", req.query.date_sort || "ASC"]
+        ],
+        include: [
+          {
+            model: database.user,
+            where: {
+              username: req.params.username
             }
-          ]
-        }
-      ]
-    });
-    // console.log(user.entries);
-    page_title = user.full_name;
+          },
+          {
+            model: database.tag,
+            through: database.journal_entries_tags,
+            include: [
+              {
+                model: database.tag_color,
+                as: "colors"
+              }
+              ]
+          }
+        ]
+      }
+    );
+    user = entries[0].user;
     req.flash("success", `User Found: ${user.username}`);
-    res.render("user/dashboard.ejs", {page_title, user, entries: user.entries, tags: user.entries.tag});
+    res.render("user/dashboard.ejs", {user, entries});
   } catch (error) {
     req.flash("error", error.message)
     res.redirect("/");
