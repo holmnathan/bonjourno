@@ -39,3 +39,7 @@
 .tag-purple {
   background: #B148FF;
 }
+
+.hidden {
+  display: none;
+}

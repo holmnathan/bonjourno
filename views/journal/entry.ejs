@@ -1,19 +1,22 @@
-<script async type="module" src="/js/location.js" defer></script>
-<script async src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_API_KEY %>&libraries=places&callback=initMap"></script>
+<script async type="module" src="/js/entry-helper.js" defer></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_API_KEY %>&libraries=places&callback=initMap"></script>
 <aside>
   <fieldset form="form-journal-entry">
-    <label for="input-location">Location</label>
-    <input form="form-journal-entry" type="text" id="input-location" name="location" />
-    <label for="input-location-place_id">Place ID</label>
-    <input form="form-journal-entry" type="text" id="input-location-place_id" name="location_place_id" />
-    <label for="input-location-name">Location Name</label>
-    <input form="form-journal-entry" type="text" id="input-location-name" name="location_name" />
-    <label for="input-location-longitude">Longitude</label>
-    <input form="form-journal-entry" type="text" id="input-location-longitude" name="location_longitude" />
-    <label for="input-location-latitude">Latitude</label>
-    <input form="form-journal-entry" type="text" id="input-location-latitude" name="location_latitude" />
-    <!-- <button form="form-journal-entry" type="submit">Submit</button> -->
+    <legend>Location</legend>
+    <label for="input-location-search">Location</label>
+    <input form="form-journal-entry" type="text" id="input-location-search" name="location-search" />
+    <input form="form-journal-entry" type="hidden" id="input-location-place-id" name="location_place_id" />
+    <input form="form-journal-entry" type="hidden" id="input-location-name" name="location_name" />
+    <input form="form-journal-entry" type="hidden" id="input-location-longitude" name="location_longitude" />
+    <input form="form-journal-entry" type="hidden" id="input-location-latitude" name="location_latitude" />
+    <button type="button" id="button-remove-location">Remove Location</button>
   </fieldset>
+  <fieldset id="fieldset-weather">
+    <legend>Weather</legend>
+    <button type="button" id="button-add-weather">Add Weather</button>
+    <button type="button" id="button-remove-weather">Remove Weather</button>
+  <!-- <button form="form-journal-entry" type="submit">Submit</button> -->
+</fieldset>
 </aside>
 <main>
   <form id="form-journal-entry" action="/journal-entry/new" method="POST">
