@@ -1,0 +1,24 @@
+<h2>Tag Library</h2>
+<ul class="tag-list">
+<% for (let tag of tags) { %>
+  <% if (tag.entries.length > 0) { %>
+    <li class="tag tag-<%= tag.color.name %>">!! <%= tag.name %></li>
+  <% } else { %>
+    <li class="tag tag-<%= tag.color.name %>"><%= tag.name %></li>
+  <% } %>
+<% } %>
+</ul>
+<form action="tags/new" method="POST">
+  <fieldset>
+    <legend>Tag Color</legend>
+    <ul class="tag-list">
+      <li class="tag"></li>
+      <% for (let color of colors) { %>
+        <li class="tag tag-<%= color.name %>"><input type="radio" value="<%= color.id %>" name="tag_color" /></li>
+      <% } %>
+    </ul>
+  </fieldset>
+  <label for="input-tag-name">Tag Name</label>
+  <input type="text" name="tag_name" id="input-tag-name" />
+  <button type="submit">Add Tag</button>
+</form>

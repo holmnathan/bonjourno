@@ -5,12 +5,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class journal_entry extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class journal_entry extends Model { 
     static associate(models) {
       this.belongsTo(models.user);
       this.belongsTo(models.image);
@@ -38,8 +33,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: DataTypes.NOW
     },
-    location_value: DataTypes.TEXT,
+    location_place_id: DataTypes.TEXT,
     location_name: DataTypes.TEXT,
+    location_latitude: {
+      type: DataTypes.REAL
+    },
+    location_longitude: {
+      type: DataTypes.REAL
+    },
     temperature_kelvin: DataTypes.INTEGER,
     weather: DataTypes.TEXT,
     visible: {

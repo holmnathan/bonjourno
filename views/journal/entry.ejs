@@ -1,0 +1,26 @@
+<script async type="module" src="/js/location.js" defer></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_API_KEY %>&libraries=places&callback=initMap"></script>
+<aside>
+  <fieldset form="form-journal-entry">
+    <label for="input-location">Location</label>
+    <input form="form-journal-entry" type="text" id="input-location" name="location" />
+    <label for="input-location-place_id">Place ID</label>
+    <input form="form-journal-entry" type="text" id="input-location-place_id" name="location_place_id" />
+    <label for="input-location-name">Location Name</label>
+    <input form="form-journal-entry" type="text" id="input-location-name" name="location_name" />
+    <label for="input-location-longitude">Longitude</label>
+    <input form="form-journal-entry" type="text" id="input-location-longitude" name="location_longitude" />
+    <label for="input-location-latitude">Latitude</label>
+    <input form="form-journal-entry" type="text" id="input-location-latitude" name="location_latitude" />
+    <!-- <button form="form-journal-entry" type="submit">Submit</button> -->
+  </fieldset>
+</aside>
+<main>
+  <form id="form-journal-entry" action="/journal-entry/new" method="POST">
+    <label for="input-title">Title</label>
+    <input type="text" id="input-title" name="title" />
+    <label for="input-body">Body</label>
+    <input type="text" id="input-body" name="body" />
+    <button type="submit">Submit</button>
+  </form>
+</main>
