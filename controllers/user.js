@@ -163,7 +163,10 @@ router.post("/journal-entry/new", async ( req, res ) => {
           location_place_id: req.body.location_place_id,
           user_id: current_user.id,
           location_longitude: req.body.location_longitude,
-          location_latitude: req.body.location_latitude
+          location_latitude: req.body.location_latitude,
+          weather_icon: req.body.weather_icon,
+          weather_condition: req.body.weather_condition,
+          weather_temp_f: req.body.weather_temp_f
         },
         include: [database.user]
       }

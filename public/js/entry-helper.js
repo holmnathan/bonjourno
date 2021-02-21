@@ -49,6 +49,13 @@ const inputs = { // Get DOM elements needed
     button: {
       remove: document.getElementById("button-remove-weather"),
       add: document.getElementById("button-add-weather")
+    },
+    field: {
+      hidden: {
+      weather_condition: document.getElementById("input-weather-condition"),
+      weather_temp_f: document.getElementById("input-weather-temp-f"),
+      weather_icon: document.getElementById("input-weather-icon")
+      }
     }
   },
   location: {
@@ -63,7 +70,8 @@ const inputs = { // Get DOM elements needed
         name: document.getElementById("input-location-name"),
         place_id: document.getElementById("input-location-place-id")
       }
-    }
+    },
+    heading: document.getElementById("h4-location-name")
   }
 }
 //-----------------------------------------------------------------------------
@@ -73,7 +81,7 @@ const inputs = { // Get DOM elements needed
 // Takes an object of DOM elements in format {Key: DOM Element},
 // Accepts a new object in format {Matching Key: Value},
 // Sets the DOM element’s value based on matching key.
-const handle_location_change = (fields_object, new_values_object) => {
+const handle_field_change = (fields_object, new_values_object) => {
   for (const field in fields_object) {
     for (const value in new_values_object) {
       if (value === field) {
@@ -93,7 +101,11 @@ const fill_form = () => {
     place_id: place.place_id
   }
   // Update hidden location fields to Google Maps Autocomplete values.
-  handle_location_change(inputs.location.field.hidden, new_values);
+  handle_field_change(inputs.location.field.hidden, new_values);
+  
+  // Update Location title for end-user
+  inputs.location.heading.textContent = place.name;
+  inputs.location.heading.classList.remove("inactive-text");
 }
 
 // Instantiate a new Google Maps Autocomplete field.
@@ -113,10 +125,14 @@ inputs.location.button.reset.addEventListener("click", (event) => {
   }
   
   // Clear values for all hidden location fields.
-  handle_location_change(inputs.location.field.hidden, new_values);
+  handle_field_change(inputs.location.field.hidden, new_values);
   
   // Reset Autocomplete field
   inputs.location.field.search.value = null;
+  
+  // Update Location title for end-user
+  inputs.location.heading.textContent = "Add a Location…";
+  inputs.location.heading.classList.add("inactive-text");
 });
 //-----------------------------------------------------------------------------
 // OpenWeather
@@ -149,6 +165,16 @@ inputs.weather.button.add.addEventListener("click", async (event) => {
     
     const current_weather = await openweather.request();
     console.log(current_weather);
+    
+    const new_values = {
+      weather_temp_f: current_weather.main.temp,
+      weather_condition: current_weather.weather[0].description,
+      weather_icon: current_weather.weather[0].icon
+    }
+    
+    // Clear values for all hidden location fields.
+    handle_field_change(inputs.weather.field.hidden, new_values);
+    
   } catch (error) {
     console.log(error.message);
   }

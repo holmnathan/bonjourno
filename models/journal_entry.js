@@ -41,8 +41,9 @@ module.exports = (sequelize, DataTypes) => {
     location_longitude: {
       type: DataTypes.REAL
     },
-    temperature_kelvin: DataTypes.INTEGER,
-    weather: DataTypes.TEXT,
+    weather_temp_f: DataTypes.REAL,
+    weather_condition: DataTypes.TEXT,
+    weather_icon: DataTypes.TEXT,
     visible: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

@@ -1,18 +1,18 @@
 <header>
-  <% if (!current_user) { %>
-    <h1><a href="/">bonjourno</a></h1>
-  <% } else { %>
-    <h1><a href="/<%= current_user.username %>">bonjourno</a></h1>
-  <% } %>
-  <nav>
-    <ul>
-      <% if (!current_user) { %>
-        <li><a href="/auth/sign-up">Sign up</a></li>
-        <li><a href="/auth/sign-in">Sign in</a></li>
-      <% } else { %>
-        <li><a href="/auth/sign-out">Sign out</a></li>
-        <li><a href="/<%= current_user.username %>/account">Account</a></li>
-      <% } %>
-    </ul>
-  </nav>
-</header>
+    <% if (!current_user) { %>
+      <h1><a href="/">bonjourno</a></h1>
+    <% } else { %>
+      <h1><a href="/<%= current_user.username %>">bonjourno</a></h1>
+    <% } %>
+    <nav>
+      <ul>
+        <% if (!current_user) { %>
+          <li><a href="/auth/sign-up">Sign up</a></li>
+          <li><a href="/auth/sign-in">Sign in</a></li>
+        <% } else { %>
+          <li><a href="/auth/sign-out">Sign out</a></li>
+          <li><a href="/<%= current_user.username %>/account">Account</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </header>
