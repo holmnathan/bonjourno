@@ -64,11 +64,11 @@ router.get("/:username", async ( req, res ) => {
       }
     );
 
-    req.flash("success", `User Found: ${user.username}`);
+    req.flash("success", `<h2>Journal Found<h2><p>Now viewing ${user.full_name}’s Public Journal.</p>`);
     res.render("user/dashboard.ejs", {user, entries});
     
   } catch (error) {
-    req.flash("error", error.message || error);
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>` || error);
     res.redirect("/");
   }
 });
@@ -117,7 +117,7 @@ router.get("/:username/tags", async ( req, res ) => {
     );
     res.render("user/tag-library", { page_title, tags, user, colors});
   } catch (error) {
-    req.flash("error", error.message);
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
   }
 });
 
@@ -135,8 +135,7 @@ router.post("/:username/tags/new", async ( req, res ) => {
     req.flash("success", "IT POSTED! --------")
   } catch (error) {
     res.redirect(`/${req.params.username}/tags`);
-    req.flash("error", "----------------------")
-    req.flash("error", error);
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
   }
 });
 
@@ -173,11 +172,11 @@ router.post("/journal-entry/new", async ( req, res ) => {
     );
     console.log(entry.longitude, entry.latitude);
     res.redirect(`/${current_user.username}`)
-    req.flash("success", "Entry successfully added!");
+    req.flash("success", `<h2>Journal Entry Saved</h2><p>Your new entry has been saved to your journal.<p>`);
   } catch (error) {
     res.redirect("/journal-entry/new");
     console.log(error);
-    req.flash("error", error);
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
   }
 })
 

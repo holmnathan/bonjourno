@@ -3,6 +3,8 @@
 // Prototypes
 //-----------------------------------------------------------------------------
 
+import dotenv from "./dotenv.mjs"
+
 class API {
   constructor(name, url, paramaters) {
     this.name = name;
@@ -32,48 +34,102 @@ class API {
     }
   }
 }
+
+const get_key_name = (dom_element, attribute, position) => {
+  let attribute_name;
+  let name_parts;
+  let array_position;
+  
+  try {
+    if (!(dom_element instanceof Element)) {
+      throw new Error(`“${dom_element}” is not a valid HTML DOM Element`);
+    } else if ( dom_element.getAttribute(attribute) === null) {
+      throw new Error(`“${dom_element.tagName}” element has no “${attribute}” attribute`);
+    }
+    
+  attribute_name = dom_element.getAttribute(attribute);
+  name_parts = attribute_name.split("-");
+  
+  if (position === "last") {
+    array_position = name_parts.length - 1;
+  } else if (position === "first") {
+    array_position = 0;
+  } else if (Number.isInteger(position)) {
+    if (position < name_parts.length && position >= 0) {
+      array_position = position;
+    } else {
+      throw new RangeError(`Position ${position} is out of range. Must be betwen 0 and ${name_parts.length - 1}`);
+    }
+  } else {
+    throw new RangeError(`“${position}” is not a valid argument. Only an integer, “last” or “first” are allowed.`)
+  }
+  
+    // console.log(`Element ID: “${attribute_name}”\nReturning: “${name_parts[array_position]}”`);
+    return name_parts[array_position];
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+class DOM_Element {
+  constructor(element, tag_names_array) {
+    // Initialize property names and values.
+    this.initialize(element, tag_names_array);
+  }
+  // Accepts an array of DOM elements and converts it to an object, with
+  // a key name generated from the last word in its ID attribute.
+  get_children(element_array) {
+    const output = {};
+    for (const element of element_array) {
+      const key = get_key_name(element, "id", "last");
+      if (key) {
+        output[key] = element
+      }
+    }
+    return Object.keys(output).length > 0 ? output : undefined
+  }
+  // Accepts a DOM element and returns the child elements whose ID attribute
+  // matches arguments in ${tag_name_array} array.
+  initialize(element, tag_name_array) {
+    
+    // console.log(elements_array)
+    for (let tag_name of tag_name_array) {
+        // Get child elements with an ID value that starts with ${tag_name}
+        let tags = element.querySelectorAll(`[id^="${tag_name}"]`);
+        
+        // Get matching child elements with key names
+        const tag_object = this.get_children(tags, "last")
+        
+        // Assign tag_object to prototype with this.${tag_name}
+        if (tag_object !== undefined) {
+          this[tag_name] = tag_object;
+        }
+      }  
+    }
+  }
+
 //-----------------------------------------------------------------------------
 // Global Variables
 //-----------------------------------------------------------------------------
 
 const ipdata = new API("ipdata", "https://api.ipdata.co", {
-    "api-key": "242ce2f29a71b02db6a4f3556ae2137d49230230c8706c380985b66c"
+    "api-key": dotenv.IPDATA_API_KEY
   });
 let autocomplete; // Initialize placeholder for Google Maps Autocomplete
 const location_options = { // A list of fields to return from Google Maps API
   fields: ["place_id", "geometry", "name"]
 };
-const inputs = { // Get DOM elements needed
-  weather: {
-    fieldset: document.getElementById("fieldset-weather"),
-    button: {
-      remove: document.getElementById("button-remove-weather"),
-      add: document.getElementById("button-add-weather")
-    },
-    field: {
-      hidden: {
-      weather_condition: document.getElementById("input-weather-condition"),
-      weather_temp_f: document.getElementById("input-weather-temp-f"),
-      weather_icon: document.getElementById("input-weather-icon")
-      }
-    }
-  },
-  location: {
-    button: {
-      reset: document.getElementById("button-remove-location")
-    },
-    field: {
-      search: document.getElementById("input-location-search"),
-      hidden: {
-        longitude: document.getElementById("input-location-longitude"),
-        latitude: document.getElementById("input-location-latitude"),
-        name: document.getElementById("input-location-name"),
-        place_id: document.getElementById("input-location-place-id")
-      }
-    },
-    heading: document.getElementById("h4-location-name")
-  }
+
+const inputs = {}
+
+for (const selector of document.querySelectorAll(".metadata-entry")) {
+  const inputs_key = get_key_name(selector, "id", "last");
+  inputs[inputs_key] = new DOM_Element(selector, ["button", "hidden", "input", "heading"]);
 }
+
+console.log(inputs);
 //-----------------------------------------------------------------------------
 // Google Maps Autocomplete
 //-----------------------------------------------------------------------------
@@ -101,20 +157,21 @@ const fill_form = () => {
     place_id: place.place_id
   }
   // Update hidden location fields to Google Maps Autocomplete values.
-  handle_field_change(inputs.location.field.hidden, new_values);
+  handle_field_change(inputs.location.hidden, new_values);
   
   // Update Location title for end-user
-  inputs.location.heading.textContent = place.name;
-  inputs.location.heading.classList.remove("inactive-text");
+  inputs.location.heading.h4.textContent = place.name;
+  inputs.location.heading.h4.classList.remove("inactive-text");
 }
 
-// Instantiate a new Google Maps Autocomplete field.
-autocomplete = new google.maps.places.Autocomplete(inputs.location.field.search, location_options);
+// Instantiate a new Google Maps Autocomplete 
+autocomplete = new google.maps.places.Autocomplete(inputs.location.input.search, location_options);
 
 // Add event listener for when Google Maps Autocomplete field changes.
 autocomplete.addListener("place_changed", fill_form);
 
-inputs.location.button.reset.addEventListener("click", (event) => {
+// Add event listener for location "reset" button
+inputs.location.button.remove.addEventListener("click", (event) => {
   event.preventDefault(); // Prevent form submission on click.
   
   const new_values = {
@@ -125,15 +182,22 @@ inputs.location.button.reset.addEventListener("click", (event) => {
   }
   
   // Clear values for all hidden location fields.
-  handle_field_change(inputs.location.field.hidden, new_values);
+  handle_field_change(inputs.location.hidden, new_values);
   
   // Reset Autocomplete field
-  inputs.location.field.search.value = null;
+  inputs.location.input.search.value = null;
   
   // Update Location title for end-user
-  inputs.location.heading.textContent = "Add a Location…";
-  inputs.location.heading.classList.add("inactive-text");
+  inputs.location.heading.h4.textContent = "Add a Location…";
+  inputs.location.heading.h4.classList.add("inactive-text");
 });
+
+inputs.location.button.edit.addEventListener("click", (event) => {
+  event.preventDefault();
+  
+  
+});
+
 //-----------------------------------------------------------------------------
 // OpenWeather
 //-----------------------------------------------------------------------------
@@ -142,8 +206,8 @@ inputs.weather.button.add.addEventListener("click", async (event) => {
   event.preventDefault();
   try {
     
-    let latitude = inputs.location.field.hidden.latitude.value;
-    let longitude = inputs.location.field.hidden.longitude.value
+    let latitude = inputs.location.hidden.latitude.value;
+    let longitude = inputs.location.hidden.longitude.value
     
     if ( !latitude || !longitude ) {
       const current_ip = await ipdata.request();
@@ -160,21 +224,36 @@ inputs.weather.button.add.addEventListener("click", async (event) => {
       "lat": latitude,
       "lon": longitude,
       "units": "imperial",
-      "appid": "3b61a76c04df0b3e820145234e10015d"
+      "appid": dotenv.OPENWEATHER_API_KEY
     });
     
     const current_weather = await openweather.request();
     console.log(current_weather);
     
     const new_values = {
-      weather_temp_f: current_weather.main.temp,
-      weather_condition: current_weather.weather[0].description,
-      weather_icon: current_weather.weather[0].icon
+      temp_f: current_weather.main.temp,
+      condition: current_weather.weather[0].description,
+      icon: current_weather.weather[0].icon
     }
     
-    // Clear values for all hidden location fields.
-    handle_field_change(inputs.weather.field.hidden, new_values);
+    // Clear values for all hidden weather fields.
+    handle_field_change(inputs.weather.hidden, new_values);
     
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+inputs.weather.button.remove.addEventListener("click", async (event) => {
+  try {
+    const new_values = {
+      temp_f: "",
+      condition: "",
+      icon: ""
+    }
+    
+    // Clear values for all hidden weather fields.
+    handle_field_change(inputs.weather.hidden, new_values);
   } catch (error) {
     console.log(error.message);
   }

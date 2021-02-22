@@ -1,10 +1,17 @@
-<form action="/auth/sign-in" method="POST">
-  <fieldset>
-    <legend>Sign in</legend>  
+<form id="form-auth-sign_in" class="modal form-auth hidden-legend" action="/auth/sign-in" method="POST">
+  <main>
+  <h2>Welcome Back</h2>
+  <p>Hanc ego assentior, cum teneam sententiam, quid est laborum et quas molestias excepturi.</p>
+  <fieldset class="form-layout-column">
+    <legend>Sign in</legend>
     <label for="input-email">Email</label>
     <input id="input-email" name="email" type="email" />  
     <label for="input-password">Password</label>
     <input id="input-password" name="password" type="password" />
+    <button form="form-auth-sign_in" type="submit">Sign in</button>
   </fieldset>
-  <button type="submit">Sign in</button>
+  <footer>
+    <p>Not a user yet? <a href="/auth/sign-up">Create an account…</a></p>
+  </footer>
+  </main>
 </form>

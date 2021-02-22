@@ -34,17 +34,17 @@ router.post("/sign-up", async (req, res) => {
     if (created) {
       passport.authenticate("local", {
         successRedirect: "/",
-        successFlash: "Account created user signed in."
+        successFlash: `<h2>Welcome</h2><p>Your account was successfully created.</br>You are now signed in.<p>`
       })
       res.redirect("/");
     } else {
       // if not created, the email already exists
-      req.flash("error", "An account with this email address already exists.");
+      req.flash("error", `<h2>Account already Exists</h2><p>A user with this username or email address is already active on bonjourno.<p>`);
       res.redirect("/auth/sign-up");
     }
     
   } catch (error) {
-    req.flash("error", error.message);;
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);;
     res.redirect("/auth/sign-up");
   };
 });
@@ -56,13 +56,13 @@ router.get("/sign-in", (req, res) => {
 router.post("/sign-in", passport.authenticate("local", {
   successRedirect: `/user`,
   failureRedirect: "/auth/sign-in",
-  failureFlash: "Incorrect username or password.",
-  successFlash: "Welcome! You are now signed in."
+  failureFlash: `<h2>Incorrect Credentials</h2><p>You entered an incorrect username or password.<p>`,
+  successFlash: `<h2>Welcome</h2><p>You are now signed in.<p>`
 }));
 
 router.get("/sign-out", async (req, res) => {
   req.logout();
-  req.flash("success", "You are now signed out.");
+  req.flash("success", `<h2>See You Soon</h2><p>You are now signed out.<p>`);
   res.redirect("/");
 });
 

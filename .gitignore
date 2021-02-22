@@ -104,4 +104,7 @@ dist
 .tern-port
 
 # Mac Files
-.ds_store
+.ds_storepublic/js/dotenv.mjs
+/public/js/dotenv.mjs
+
+.DS_Store
