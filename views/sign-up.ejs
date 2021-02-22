@@ -1,5 +1,8 @@
-<form action="/auth/sign-up" method="POST">
-  <fieldset>
+<form id="form-auth-sign_up" class="modal form-auth" action="/auth/sign-up" method="POST">
+  <main>
+    <h2>Welcome Back</h2>
+    <p>Hanc ego assentior, cum teneam sententiam, quid est laborum et quas molestias excepturi.</p>
+  <fieldset class="form-layout-column">
     <legend>User Information</legend>
     <label for="input-full-name">Full Name</label>
     <input id="input-full-name" name="full_name" type="text" />  
@@ -8,7 +11,7 @@
     <label for="input-birth-date">Birth Date</label>
     <input id="input-birth-date" name="birth_date" type="date" />  
   </fieldset>
-  <fieldset>
+  <fieldset class="form-layout-column">
     <legend>Credentials</legend>
     <label for="input-username">Username</label>
     <input id="input-username" name="username" type="text" />  
@@ -17,5 +20,9 @@
     <label for="input-password">Password</label>
     <input id="input-password" name="password" type="password" />
   </fieldset>
+  <footer>
+    <p>Not a user yet? <a href="/auth/sign-up">Create an account…</a></p>
+  </footer>
+  </main>
   <button type="submit">Sign up</button>
 </form>

@@ -63,9 +63,9 @@ router.get("/:username", async ( req, res ) => {
         ]
       }
     );
-
-    req.flash("success", `<h2>Journal Found<h2><p>Now viewing ${user.full_name}’s Public Journal.</p>`);
-    res.render("user/dashboard.ejs", {user, entries});
+    page_title = user.full_name
+    // req.flash("success", `<h2>Journal Found<h2><p>Now viewing ${user.full_name}’s Public Journal.</p>`);
+    res.render("user/dashboard.ejs", {user, entries, page_title});
     
   } catch (error) {
     req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>` || error);

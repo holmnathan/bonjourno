@@ -6,6 +6,11 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class journal_entry extends Model { 
+    short_date() {
+      const month = this.date_time.toLocaleDateString("en-US", { month: "short"});
+      const day = this.date_time.toLocaleDateString("en-US", { day: "numeric"});
+      return {month, day}
+    }
     static associate(models) {
       this.belongsTo(models.user);
       this.belongsTo(models.image);

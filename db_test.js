@@ -237,12 +237,26 @@ const bulkTag = async () => {
   );
 }
 
+const tag_entryy = async () => {
+  try {
+    const entry = db.journal_entry.addTag({
+      where: {
+        user_id: 1
+        
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+  
+}
+
 // bulkInsert();
 // bulkTag();
 
 // createImage();
 // createUser();
-createJournal();
+// createJournal();
 
 // run_image_source();
 // run_user();

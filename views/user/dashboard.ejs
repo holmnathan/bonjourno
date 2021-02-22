@@ -1,25 +1,50 @@
-<% if ( current_user && current_user.id === user.id ) { %>
-  <% console.log(current_user) %>
-<h2>Hi <%= user.display_name %></h2>
-<% } else { %>
-<h2><%= user.full_name %></h2>
-<% } %>
-<p><a href="/journal-entry/new">New Entry</a></p>
-<nav class="nav-entry-sort">
-  <form action="/<%= user.username %>" method="GET">
-    <label for="radio-sort-date-ascending">Date Ascending<input id="radio-sort-date-ascending" value="asc" type="radio" name="date_sort">
-    <label for="radio-sort-date-descending">Date Descending<input id="radio-sort-date-descending" value="desc" type="radio" name="date_sort">
-    <button type="submit">Sort</button>
-</nav>
-<% for (let entry of entries) { %>
-  <article class="entry-card">
-    <h3><%= entry.title %></h3>
-    <p><%= entry.body %></p>
-    <p><%= entry.date_time.toLocaleString() %></p>
-    <ul class="tag-list">
-      <% for (let tag of entry.tags) { %>
-        <li class="tag tag-<%= tag.color.name %>" ><%= tag.name %></li>
-      <% } %>
+<main>
+<header class="navigation">
+  <% if ( current_user && current_user.id === user.id ) { %>
+    <% console.log(current_user) %>
+  <h2>👨‍💼 Hi <%= user.display_name %></h2>
+  <% } else { %>
+  <h2>👨‍💼 <%= user.full_name %></h2>
+  <% } %>
+</header>
+  <aside class="list-filter">
+  <p><a class="button" href="/journal-entry/new">Compose</a></p>
+  <nav class="nav-entry-sort">
+    <form action="/<%= user.username %>" method="GET">
+    <ul class="form-layout-row">
+      <li class="form-group form-layout-row">
+        <input id="radio-sort-date-ascending" value="asc" type="radio" name="date_sort">
+        <label for="radio-sort-date-ascending">Date Ascending</label>
+      </li>
+      <li class="form-group form-layout-row">
+        <input id="radio-sort-date-descending" value="desc" type="radio" name="date_sort" />
+        <label for="radio-sort-date-descending">Date Descending</label>
+      </li>
     </ul>
+      <button type="submit">Sort</button>
+    </form>
+  </nav>
+  </aside>
+<section class="col" id="list-entry-all">
+<% for (let entry of entries) { %>
+  <article class="card-entry">
+    <header>
+      <h3><%= entry.title %></h3>
+      <% if (entry.tags.length > 0) { %>
+        <ul class="tag-list">
+          <% for (let tag of entry.tags) { %>
+            <li class="tag button-round button-circle-small tag-<%= tag.color.name %>" ><span><%= tag.name %></span></li>
+          <% } %>
+        </ul>
+    <% } %>
+    </header>
+    <dl class="date-entry-short_date">
+      <dt>Month</<dt>
+      <dd class="date-month"><%= entry.short_date().month %></<dd>
+      <dt>Day</dt>
+      <dd class="date-day"><%= entry.short_date().day %></dd>
+    </dl>
   </article>
 <% } %>
+</section>
+</main>
