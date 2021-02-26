@@ -1,0 +1,20 @@
+  <div id="site-header" class="content navigation">
+    <header>
+  <% if (!current_user) { %>
+    <h1><a href="/">bonjourno</a></h1>
+  <% } else { %>
+    <h1><a href="/<%= current_user.username %>">bonjourno</a></h1>
+  <% } %>
+  </header>
+  <nav>
+    <ul class="button-list form-layout-row">
+      <% if (!current_user) { %>
+        <li class="button"><a href="/auth/sign-up">Sign up</a></li>
+        <li class="button"><a href="/auth/sign-in">Sign in</a></li>
+      <% } else { %>
+        <li class="button"><a href="/auth/sign-out">Sign out</a></li>
+        <li class="button"><a href="/<%= current_user.username %>/account">Account</a></li>
+      <% } %>
+    </ul>
+  </nav>
+  </div>

@@ -1,4 +1,4 @@
-<main>
+<div class="content">
 <header class="navigation">
   <% if ( current_user && current_user.id === user.id ) { %>
     <% console.log(current_user) %>
@@ -7,7 +7,7 @@
   <h2>👨‍💼 <%= user.full_name %></h2>
   <% } %>
 </header>
-  <aside class="list-filter">
+<aside class="list-filter">
   <p><a class="button" href="/journal-entry/new">Compose</a></p>
   <nav class="nav-entry-sort">
     <form action="/<%= user.username %>" method="GET">
@@ -24,10 +24,11 @@
       <button type="submit">Sort</button>
     </form>
   </nav>
-  </aside>
-<section class="col" id="list-entry-all">
+</aside>
+<main class="col" id="list-entry-all">
 <% for (let entry of entries) { %>
   <article class="card-entry">
+    <article class="card">
     <header>
       <h3><%= entry.title %></h3>
       <% if (entry.tags.length > 0) { %>
@@ -38,13 +39,23 @@
         </ul>
     <% } %>
     </header>
+    <section class="flex-row flex-top navigation">
     <dl class="date-entry-short_date">
-      <dt>Month</<dt>
-      <dd class="date-month"><%= entry.short_date().month %></<dd>
+      <dt>Month</dt>
+      <dd class="date-month"><%= entry.short_date().month %></dd>
       <dt>Day</dt>
       <dd class="date-day"><%= entry.short_date().day %></dd>
     </dl>
+    <p class="button"><a href="/<%= user.username %>/<%= entry.id %>">Share</a></p>
+    </section>
+    </article>
+    <nav>
+      <ul class="button-list form-layout-row">
+        <li class="button">Delete</li>
+        <li class="button">Edit</li>
+      </ul>
+    </nav>
   </article>
 <% } %>
-</section>
 </main>
+</div>
