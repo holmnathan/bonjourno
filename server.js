@@ -16,6 +16,7 @@ const session = require("express-session");
 const passport = require("./config/passport-config");
 const flash = require("connect-flash");
 const authorized = require('./middleware/authorized');
+const methodOverride = require('method-override');
 
 //-----------------------------------------------------------------------------
 // Controllers
@@ -43,6 +44,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(methodOverride('_method'))
 
 app.use((req, res, next) => {
   // before every route, attach the flash messages and current user to res.locals

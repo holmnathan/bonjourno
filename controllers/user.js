@@ -89,7 +89,22 @@ router.get("/:username/tags", async ( req, res ) => {
       }
     );
     
-    const colors = await database.tag_color.findAll();
+    const colors = await database.tag_color.findAll({
+      order: [
+        ["id", "asc"], [{ model: database.tag }, "name", "asc"]
+      ],
+      include: [
+        {
+          model: database.tag,
+          include: {
+            model: database.user,
+            where: {
+              username: req.params.username
+            }
+          }
+        },
+      ]
+    });
     
     const tags = await database.tag.findAll(
       {
@@ -122,21 +137,53 @@ router.get("/:username/tags", async ( req, res ) => {
 });
 
 router.post("/:username/tags/new", async ( req, res ) => {
-  console.log(req.body.tag_name)
   try {
-    const tag = await database.tag.create(
-      {
-        where: {
-          name: req.body.tag_name
+    const current_user = res.locals.current_user;
+    const tag = await database.tag.create({
+          name: req.body.tag_name,
+          color_id: req.body.tag_color,
+          user_id: current_user.id
         }
-      }
     );
-    res.redirect(`/${req.params.username}/tags`);
-    req.flash("success", "IT POSTED! --------")
+    req.flash(`<h2>Tag Created</h2><p>${req.body.tag_name} has been added to your Tag Library.</p>`)
+    res.redirect(`/${current_user.username}/tags`);
   } catch (error) {
-    res.redirect(`/${req.params.username}/tags`);
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
+    res.redirect(`/${current_user.username}/tags`);
+  }
+});
+
+router.delete("/:username/tags/:id", async ( req, res ) => {
+    const current_user = res.locals.current_user;
+  try {
+    database.tag.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    req.flash(`<h2>Tag Deleted</h2><p>Tag ${req.params.id} has been deleted.</p>`)
+  } catch (error) {
+    req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
+    res.redirect(`/${current_user.username}/tags`);
+  }
+  res.redirect(`/${current_user.username}/tags`);
+});
+
+router.put("/:username/tags/:id", async ( req, res ) => {
+    const current_user = res.locals.current_user;
+  try {
+    database.tag.update({
+      name: req.body.tag_name
+    }, {
+      where: {
+        id: req.params.id
+      }
+    });
+    req.flash(`<h2>Tag Updated</h2><p>Tag name has been updated to ${req.body.tag_name}.</p>`)
+  } catch (error) {
     req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
   }
+  res.redirect(`/${current_user.username}/tags`);
 });
 
 // router.get("/:username/journal-:entry", async (req, res) => {

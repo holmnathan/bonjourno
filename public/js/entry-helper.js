@@ -97,7 +97,7 @@ class DOM_Element {
     // console.log(elements_array)
     for (let tag_name of tag_name_array) {
         // Get child elements with an ID value that starts with ${tag_name}
-        let tags = element.querySelectorAll(`[id^="${tag_name}"]`);
+        let tags = element.querySelectorAll(`[class^="tag"]`);
         
         // Get matching child elements with key names
         const tag_object = this.get_children(tags, "last")
