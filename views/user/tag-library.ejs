@@ -1,3 +1,5 @@
+<%# ----- Display a User’s Tag Library  ----- %>
+
 <div class="content content-center">
   <main class="modal form-auth">
     <h2>Tag Library</h2>
@@ -5,9 +7,11 @@
     <hr />
     <% for (let color of colors) { %>
       <% if (color.tags.length > 0) { %>
+        <%# Include Tag List organized by color %>
         <%- include('partials/tag-list', {user: user, color: color}); %>
       <% } %>
     <% } %>
+    <%# Include New Tag Form %>
     <%- include('partials/new-tag', {user: user, colors: colors}); %>
   </main>
 </div>
