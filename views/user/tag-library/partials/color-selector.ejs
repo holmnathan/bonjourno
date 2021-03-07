@@ -1,0 +1,12 @@
+<%# ----- Pop-over to select color for a given tag ----- %>
+
+<fieldset id="fieldset-tag-color" class="hidden-popover popover">
+  <legend>Tag Color</legend>
+  <input id="input-tag_color-id" type="hidden" name="tag_color" />
+  <ul class="tag-list">
+    <li data-color-name="null" data-color-id="null" class="color-id tag button-round button-circle-medium">𝗫</li>
+    <% for (let color of colors) { %>
+      <li data-color-name="<%= color.name %>" data-color-id="<%= color.id %>" class="color-id tag button-round button-circle-medium tag-<%= color.name %>"></li>
+    <% } %>
+  </ul>
+</fieldset>

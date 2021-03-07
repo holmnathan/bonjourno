@@ -1,0 +1,16 @@
+<div class="content">
+  <%# Include a user name or greeting %>
+  <%- include("partials/header", { user: user }) %>
+  <aside class="list-filter">
+    <%# Include Compose and Tag Library links %>
+    <%- include("partials/navigation", { user: user }) %>
+    <%# Include sorting options for journal entries %>
+    <%- include("partials/filter-sort", { user: user }) %>
+  </aside>
+  <main class="col" id="list-entry-all">
+  <% for (let entry of entries) { %>
+    <%# Include Journal Entries %>
+    <%- include("partials/journal-entry", { user: user, entry: entry }) %>
+  <% } %>
+  </main>
+</div>

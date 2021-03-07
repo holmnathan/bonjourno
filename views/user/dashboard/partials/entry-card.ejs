@@ -1,0 +1,16 @@
+<%# ---- Journal Entry Card ----- %>
+
+<article class="card">
+  <header>
+    <h3><%= entry.title %></h3>
+    <% if (entry.tags.length > 0) { %>
+      <%# Include a list of tags assigned to an entry %>
+      <%- include("entry-tags", { tags: entry.tags }) %>
+    <% } %>
+  </header>
+  <section class="flex-row flex-top navigation">
+    <%# Include Entry date %>
+    <%- include ("entry-date", { entry: entry }) %>
+    <p class="button"><a href="/<%= user.username %>/<%= entry.id %>">Share</a></p>
+  </section>
+</article>

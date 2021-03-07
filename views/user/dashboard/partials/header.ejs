@@ -1,0 +1,11 @@
+<%# Display the user’s name, %>
+<%# Display a personalized greeting if the current user is authenticated. %>
+
+<header class="navigation">
+  <% if ( current_user && current_user.id === user.id ) { %>
+    <% console.log(current_user) %>
+  <h2>👨‍💼 Hi <%= user.display_name %></h2>
+  <% } else { %>
+  <h2>👨‍💼 <%= user.full_name %></h2>
+  <% } %>
+</header>
