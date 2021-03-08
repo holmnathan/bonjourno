@@ -11,6 +11,8 @@ const router = express.Router();
 const database  = require("../models");
 const authorized = require("../middleware/authorized");
 const axios = require("axios");
+const cloudinary = require("cloudinary");
+const {data_uri, multer_upload} = require("../middleware/data_uri")
 
 //-----------------------------------------------------------------------------
 // Routes
@@ -207,6 +209,16 @@ router.get("/journal-entry/new", async ( req, res ) => {
   res.render("journal/entry", { GOOGLE_API_KEY: process.env.GOOGLE_API_KEY });
 });
 
+router.get("/:username/:journal_id/editor", async ( req, res ) => {
+  try {
+    const entry = await database.journal_entry.findByPk(req.params.journal_id, {include: database.user});
+    res.render("journal/editor", {entry, user: entry.user.dataValues, GOOGLE_API_KEY: process.env.GOOGLE_API_KEY})
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 router.get("/:username/:journal_id", async ( req, res ) => {
   try {
     const entry = await database.journal_entry.findByPk(req.params.journal_id, {include: database.user});
@@ -217,6 +229,75 @@ router.get("/:username/:journal_id", async ( req, res ) => {
   }
 });
 
+router.get("/:username/:journal_id/image", async ( req, res ) => {
+  try {
+    const properties = {};
+    
+    const entry = await database.journal_entry.findByPk(req.params.journal_id, {include: [database.user, {model: database.image, include: database.image_source}]});
+    
+    properties.entry = entry.dataValues
+    properties.user = entry.user ? entry.user.dataValues : undefined;
+    properties.image = entry.image !== null ? entry.image.dataValues : undefined;
+    properties.image_source = entry.image ? entry.image.image_source.dataValues : undefined;
+    
+    res.render("image/index", {...properties})
+    
+    res.redirect("image");
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+router.post("/:username/:journal_id/image",multer_upload, async ( req, res ) => {
+  try {
+    const file = await data_uri(req).content;
+    
+    const cloudinary_upload = await cloudinary.uploader.upload(file)
+    console.log(cloudinary_upload)
+    
+    const image = await database.image.findOrCreate({
+      where: {
+        asset_id: cloudinary_upload.public_id,
+        source_id: 2
+      }
+    });
+    
+    const entry = await database.journal_entry.findByPk(req.params.journal_id)
+    
+    
+    entry.setImage(image[0].id);
+    
+    console.log(entry)
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+    res.redirect("image")
+});
+
+router.delete("/:username/:journal_id/image", async ( req, res ) => {
+  try {
+    const entry = await database.journal_entry.findByPk(req.params.journal_id, {
+      include: {
+        model: database.image
+      }
+    });
+    
+    console.log(entry)
+    
+    const remove = await entry.image.destroy({
+      where: {id: entry.image_id}
+    });
+    
+    entry.update({
+      image_id: null
+    });
+  } catch (error) {
+    console.log(error);
+  }
+    res.redirect("image");
+});
 
 router.post("/journal-entry/new", async ( req, res ) => {
   try {

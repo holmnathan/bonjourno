@@ -4,13 +4,14 @@
   <%# Include Journal Entry Card %>
   <%- include("entry-card", { entry: entry, user: user }) %>
   <nav>
-    <form method="POST">
+    <form>
     <ul class="button-list form-layout-row">
       <li>
-        <button type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=PUT" class="button button-clear button-round button-circle-medium">E</button>
+        <button formmethod="GET" type="submit" formaction="/<%= user.username %>/<%= entry.id %>/editor" class="button button-clear button-round button-circle-medium">E</button>
       </li>
       <li>
-        <button type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=DELETE" class="button button-clear button-round button-circle-medium">D</button>
+        <button formmethod="POST" type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=DELETE" class="button-icon"><img src="/icons/icon-delete-entry.svg" /></button>
+        <address class="author">Jason Gennaro</address>
       </li>
     </ul>
     </form>

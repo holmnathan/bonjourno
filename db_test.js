@@ -251,6 +251,22 @@ const tag_entryy = async () => {
   
 }
 
+const bulkDestroy = async () => {
+  try {
+    const { Op } = require("sequelize");
+    const images = await db.image.destroy(
+      {where: {
+          id: {
+            [Op.notLike]: "PARP"
+          }
+        }}
+    )
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+bulkDestroy();
 // bulkInsert();
 // bulkTag();
 

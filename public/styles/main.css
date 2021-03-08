@@ -21,6 +21,17 @@ main {
   margin-bottom: 1rem;
 }
 
+.button-icon {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.button-icon img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .modal {
   background: var(--fill-gray);
   border: 1px solid var(--border-gray);
