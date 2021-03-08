@@ -73,6 +73,20 @@ router.get("/:username", async ( req, res ) => {
   }
 });
 
+router.delete("/:username/:journal_id", async ( req, res ) => {
+  try {
+    database.journal_entry.destroy({
+      where: {
+        id: req.params.journal_id
+      }
+    });
+    req.flash(`<h2>Entry Deleted</h2><p>Article ${req.params.journal_id} has been deleted.</p>`);
+    } catch (error) {
+      req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
+  }
+  res.redirect(`/${req.params.username}`)
+});
+
 router.get("/:username/account", authorized, async ( req, res ) => {
   res.render("user/account");
 });
@@ -161,10 +175,9 @@ router.delete("/:username/tags/:id", async ( req, res ) => {
         id: req.params.id
       }
     });
-    req.flash(`<h2>Tag Deleted</h2><p>Tag ${req.params.id} has been deleted.</p>`)
+    req.flash(`<h2>Tag Deleted</h2><p>Tag ${req.params.id} has been deleted.</p>`);
   } catch (error) {
     req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
-    res.redirect(`/${current_user.username}/tags`);
   }
   res.redirect(`/${current_user.username}/tags`);
 });
@@ -193,6 +206,17 @@ router.put("/:username/tags/:id", async ( req, res ) => {
 router.get("/journal-entry/new", async ( req, res ) => {
   res.render("journal/entry", { GOOGLE_API_KEY: process.env.GOOGLE_API_KEY });
 });
+
+router.get("/:username/:journal_id", async ( req, res ) => {
+  try {
+    const entry = await database.journal_entry.findByPk(req.params.journal_id, {include: database.user});
+    res.render("journal/index", {entry, user: entry.user.dataValues})
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 
 router.post("/journal-entry/new", async ( req, res ) => {
   try {

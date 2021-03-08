@@ -1,0 +1,16 @@
+<div class="content content-row">
+<aside id="metadata">
+  <ul>
+    <% if (entry.location_name) { %><li><%= entry.location_name %></li><% } %>
+    <% if (entry.weather_condition) { %><li><%= entry.weather_condition %></li><% } %>
+    <% if (entry.weather_temp_f) { %><li><%= entry.weather_temp_f %><sup>ºF</sup></li><% } %>
+    <% if (entry.date_time) { %><li><%= entry.date_time %></li><% } %>
+  </ul>
+</aside>
+<main class="content-main">
+  <div class="image-placeholder"></div>
+  <%- include("partials/navigation", { user: user }) %>
+  <h2><%= entry.title %></h2>
+  <p><%= entry.body %></p>
+</main>
+</div>

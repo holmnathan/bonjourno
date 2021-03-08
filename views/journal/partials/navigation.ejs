@@ -1,0 +1,11 @@
+<% if (current_user) { %>
+  <nav>
+    <form class="form-layout-row">
+      <ul class="button-list">
+        <li><button type="submit" class="button" formaction="/<%= user.username %>/<%= entry.id %>?_method=DELETE" formmethod="POST">Delete</button></li>
+        <li><a href="" class="button">Test</a></li>
+        <li><a href="" class="button">Test</a></li>
+      </ul>
+    </form>
+  </nav>
+<% } %>

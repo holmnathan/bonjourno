@@ -4,9 +4,15 @@
   <%# Include Journal Entry Card %>
   <%- include("entry-card", { entry: entry, user: user }) %>
   <nav>
+    <form method="POST">
     <ul class="button-list form-layout-row">
-      <li class="button">Delete</li>
-      <li class="button">Edit</li>
+      <li>
+        <button type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=PUT" class="button button-clear button-round button-circle-medium">E</button>
+      </li>
+      <li>
+        <button type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=DELETE" class="button button-clear button-round button-circle-medium">D</button>
+      </li>
     </ul>
+    </form>
   </nav>
 </section>
