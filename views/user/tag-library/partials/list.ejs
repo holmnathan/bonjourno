@@ -5,8 +5,8 @@
     <li class="tag tag-<%= color.name %>">
       <form data-is-tag class="form-layout-row">
         <input type="text" value="<%= tag.name %>" name="tag_name"/>
-        <button data-button-delete class="button-clear button-round button-circle-small" formaction="/<%= user.username %>/tags/<%= tag.id %>?_method=DELETE"" formmethod="post">D</button>
-        <button class="button-clear button-round button-circle-small" formaction="/<%= user.username %>/tags/<%= tag.id %>?_method=PUT" formmethod="post">S</button>
+        <button aria-label="Delete <%= tag.name %> Tag" data-button-delete class="button-icon" formaction="/<%= user.username %>/tags/<%= tag.id %>?_method=DELETE"" formmethod="post"><span class="fi fi-rr-delete"></span></button>
+        <button aria-label="Save Changes to <%= tag.name %> Tag" class="button-icon" formaction="/<%= user.username %>/tags/<%= tag.id %>?_method=PUT" formmethod="post"><span class="fi  fi-rr-text-check"></span></button>
       </form>
     </li>
   <% } %>

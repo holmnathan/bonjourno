@@ -58,18 +58,10 @@
     </fieldset>
   </article>
 </aside>
-<main class="content-main">
-  <div class="image-placeholder"></div>
-  <form class="form-layout-column" id="form-journal_entry" action="/journal-entry/new" method="POST">
-    <div class="form-group">
-      <label for="input-title">Title</label>
-      <input type="text" id="input-title" name="title" value="<%= entry.title %>" />
-    </div>
-    <div class="form-group">
-      <label for="input-body">Body</label>
-      <textarea rows="15" id="input-body" name="body"><%= entry.body %></textarea>
-    </div>
-    <button type="submit">Save Entry</button>
-  </form>
-</main>
+<% console.log("--------", edit_mode) %>
+<% if (typeof locals.entry !== 'undefined') { %>
+  <%- include("partials/composer", {entry, image, edit_mode}) %>
+<% } else { %>
+  <%- include("partials/composer", {edit_mode} ) %>
+<% } %>
 </div>

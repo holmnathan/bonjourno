@@ -4,8 +4,8 @@
 <header class="navigation">
   <% if ( current_user && current_user.id === user.id ) { %>
     <% console.log(current_user) %>
-  <h2>👨‍💼 Hi <%= user.display_name %></h2>
+  <h2><span aria-label="Profile Picture" class="button button-round profile-image"><span class="fi fi-rr-user"></span></span>Hi <%= user.display_name %></h2>
   <% } else { %>
-  <h2>👨‍💼 <%= user.full_name %></h2>
+  <h2><span aria-label="Profile Picture" class="button button-round profile-image"><span class="fi fi-rr-user"></span></span><%= user.full_name %></h2>
   <% } %>
 </header>

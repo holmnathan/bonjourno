@@ -9,11 +9,11 @@
   <nav>
     <ul class="button-list form-layout-row">
       <% if (!current_user) { %>
-        <li class="button"><a href="/auth/sign-up">Sign up</a></li>
-        <li class="button"><a href="/auth/sign-in">Sign in</a></li>
+        <li class="button"><a href="/auth/sign-up"><i class="bi bi-person-plus"></i>Sign up</a></li>
+        <li class="button"><a href="/auth/sign-in"><i class="bi bi-box-arrow-in-left"></i>Sign in</a></li>
       <% } else { %>
-        <li class="button"><a href="/auth/sign-out">Sign out</a></li>
-        <li class="button"><a href="/<%= current_user.username %>/account">Account</a></li>
+        <li class="button"><a href="/auth/sign-out"><i class="bi bi-box-arrow-out-right"></i>Sign out</a></li>
+        <li class="button"><a href="/<%= current_user.username %>/account"><i class="bi bi-box-arrow-out-right"></i>Account</a></li>
       <% } %>
     </ul>
   </nav>

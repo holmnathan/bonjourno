@@ -1,6 +1,9 @@
 <%# ---- Journal Entry Card ----- %>
-
-<article class="card">
+<% if (image !== null) { %>
+  <article class="card" style="background-image: url('<%= image.image_source.url %><%= image.asset_id %>')">
+<% } else { %>
+  <article class="card">
+<% } %>
   <header>
     <h3><%= entry.title %></h3>
     <% if (entry.tags.length > 0) { %>
@@ -11,6 +14,6 @@
   <section class="flex-row flex-top navigation">
     <%# Include Entry date %>
     <%- include ("entry-date", { entry: entry }) %>
-    <p class="button"><a href="/<%= user.username %>/<%= entry.id %>">Share</a></p>
+    <p class="button-icon"><a aria-label="Share Journal Entry" href="/<%= user.username %>/<%= entry.id %>"><span class="fi fi-rr-upload"></span></a></p>
   </section>
 </article>

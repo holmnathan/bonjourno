@@ -21,22 +21,26 @@ const run_image = async () => {
 
 const [image_name, image_created] = await db.image.findOrCreate({
   where: {
-  source_value: "8asdf9asdf0"
+  asset_id: "pexels-matt-hardy-2567958_yydczy"
 }
 });
 
-const [image_source_name, image_source_created] = await db.image_source.findOrCreate({
+const image_source = await db.image_source.findOne({
   where: {
-  name: "unsplash",
+  name: "cloudinary",
   url: "https://res.cloudinary.com/cakebake/image/upload/"
 }
 });
 
-  console.log("------------------------------");
-  console.log("UUID: ", source_name.id);
-  console.log("Name: ", source_name.name);
-  console.log("Name: ", source_name.url);
-  console.log("------------------------------");
+image_name.setImage_source(image_source);
+
+console.log(image_name)
+
+  // console.log("------------------------------");
+  // console.log("UUID: ", source_name.id);
+  // console.log("Name: ", source_name.name);
+  // console.log("Name: ", source_name.url);
+  // console.log("------------------------------");
 
 }
 
@@ -266,7 +270,7 @@ const bulkDestroy = async () => {
   }
 }
 
-bulkDestroy();
+// bulkDestroy();
 // bulkInsert();
 // bulkTag();
 
@@ -277,6 +281,7 @@ bulkDestroy();
 // run_image_source();
 // run_user();
 // run_journal();
+run_image();
 
 // testAssociation();
 
