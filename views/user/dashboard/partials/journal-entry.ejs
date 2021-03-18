@@ -2,15 +2,16 @@
 
 <section class="card-entry">
   <%# Include Journal Entry Card %>
-  <%- include("entry-card", { entry, user, image }) %>
+  <%- include("entry-card", { entry: entry, user: user }) %>
   <nav>
     <form>
     <ul class="button-list form-layout-row">
       <li>
-        <button aria-label="Edit Journal Entry"formmethod="GET" type="submit" formaction="/<%= user.username %>/<%= entry.id %>/editor" class="button-icon"><span class="fi fi-rr-edit"></span></button>
+        <button formmethod="GET" type="submit" formaction="/<%= user.username %>/<%= entry.id %>/editor" class="button button-clear button-round button-circle-medium">E</button>
       </li>
       <li>
-        <button aria-label="Delete Journal Entry" formmethod="POST" type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=DELETE" class="button-icon"><span class="fi fi-rr-file-delete"></span></button>
+        <button formmethod="POST" type="submit" formaction="/<%= user.username %>/<%= entry.id %>?_method=DELETE" class="button-icon"><img src="/icons/icon-delete-entry.svg" /></button>
+        <address class="author">Jason Gennaro</address>
       </li>
     </ul>
     </form>

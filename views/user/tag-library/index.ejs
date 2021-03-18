@@ -7,11 +7,11 @@
     <hr />
     <% for (let color of colors) { %>
       <% if (color.tags.length > 0) { %>
-        <%# Include Tag List organized by color #%>
+        <%# Include Tag List organized by color %>
         <%- include('partials/list', {user: user, color: color}); %>
       <% } %>
     <% } %>
-    <%# Include New Tag Form #%>
+    <%# Include New Tag Form %>
     <%- include('partials/new', {user: user, colors: colors}); %>
   </main>
 </div>

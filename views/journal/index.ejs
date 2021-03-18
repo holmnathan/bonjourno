@@ -8,12 +8,7 @@
   </ul>
 </aside>
 <main class="content-main">
-  <% console.log(image) %>
-  <% if (typeof image !== "undefined") { %>
-    <%- include("../image/partials/image", {image}); %>
-  <% } else { %>
-    <%- include("../image/partials/image") %>
-  <% } %>
+  <div class="image-placeholder"></div>
   <%- include("partials/navigation", { user: user }) %>
   <h2><%= entry.title %></h2>
   <p><%= entry.body %></p>

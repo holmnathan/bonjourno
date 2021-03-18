@@ -3,13 +3,13 @@
 <form action="/<%= user.username %>" method="GET">
   <nav class="nav-entry-sort">
     <ul class="form-layout-row">
-      <li>
+      <li class="form-group form-layout-row">
         <input id="radio-sort-date-ascending" value="asc" type="radio" name="date_sort">
-        <label for="radio-sort-date-ascending">Newest First</label>
+        <label for="radio-sort-date-ascending">Date Ascending</label>
       </li>
-      <li>
+      <li class="form-group form-layout-row">
         <input id="radio-sort-date-descending" value="desc" type="radio" name="date_sort" />
-        <label for="radio-sort-date-descending">Oldest First</label>
+        <label for="radio-sort-date-descending">Date Descending</label>
       </li>
     </ul>
     <button type="submit">Sort</button>

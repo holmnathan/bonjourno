@@ -1,7 +1,6 @@
-<% if (typeof image !== "undefined" && image !== null) { %>
-  <% console.log(image) %>
-  <div class="image" style="background-image: url('<%= image.image_source.url %><%= image.asset_id %>')"></div>
+<% if (image) { %>
+  <img src="<%= image_source.url %><%= image.asset_id %>" />
   <%- include("remove", {image}) %>
 <% } else { %>
-  <div class="image image-placeholder"></div>
+  <div class="image-placeholder"></div>
 <% } %>

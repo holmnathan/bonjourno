@@ -39,6 +39,9 @@ router.get("/:username", async ( req, res ) => {
   
     const entries = await database.journal_entry.findAll(
       {
+        where: {
+          visible: true
+        },
         order: [
           ["date_time", req.query.date_sort || "asc"]
         ],
@@ -58,10 +61,6 @@ router.get("/:username", async ( req, res ) => {
                 as: "color"
               }
             ]
-          },
-          {
-            model: database.image,
-            include: database.image_source
           }
         ]
       }
@@ -182,7 +181,7 @@ router.delete("/:username/tags/:id", async ( req, res ) => {
   } catch (error) {
     req.flash("error", `<h2>Unexpected Error</h2><p>${error.message}<p>`);
   }
-  res.render(`/${current_user.username}/tags`);
+  res.redirect(`/${current_user.username}/tags`);
 });
 
 router.put("/:username/tags/:id", async ( req, res ) => {
@@ -206,50 +205,14 @@ router.put("/:username/tags/:id", async ( req, res ) => {
 //   
 // })
 
-router.get("/:username/compose", async ( req, res ) => {
-  res.render("journal/editor", { GOOGLE_API_KEY: process.env.GOOGLE_API_KEY, edit_mode: "compose"})
-});
-
-router.post("/:username/compose", async ( req, res ) => {
-  try {
-    console.log("COMPOSE COMPOSE COMPOSE")
-    const current_user = res.locals.current_user;
-    
-    const entry = await database.journal_entry.findOrCreate(
-      {
-        where: {
-          title: req.body.title,
-          body: req.body.body,
-          location_name: req.body.location_name,
-          location_place_id: req.body.location_place_id,
-          user_id: current_user.id,
-          location_longitude: req.body.location_longitude,
-          location_latitude: req.body.location_latitude,
-          weather_icon: req.body.weather_icon,
-          weather_condition: req.body.weather_condition,
-          weather_temp_f: req.body.weather_temp_f
-        },
-        include: [database.user]
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-  res.redirect()
+router.get("/journal-entry/new", async ( req, res ) => {
+  res.render("journal/entry", { GOOGLE_API_KEY: process.env.GOOGLE_API_KEY });
 });
 
 router.get("/:username/:journal_id/editor", async ( req, res ) => {
   try {
-    const entry = await database.journal_entry.findByPk(req.params.journal_id, {
-      include: [
-        database.user,
-        {
-          model: database.image,
-          include: database.image_source
-        }
-      ]
-    });
-    res.render("journal/editor", {entry, user: entry.user, image: entry.image, GOOGLE_API_KEY: process.env.GOOGLE_API_KEY, edit_mode: "edit"})
+    const entry = await database.journal_entry.findByPk(req.params.journal_id, {include: database.user});
+    res.render("journal/editor", {entry, user: entry.user.dataValues, GOOGLE_API_KEY: process.env.GOOGLE_API_KEY})
     
   } catch (error) {
     console.log(error.message);
@@ -258,17 +221,8 @@ router.get("/:username/:journal_id/editor", async ( req, res ) => {
 
 router.get("/:username/:journal_id", async ( req, res ) => {
   try {
-    const entry = await database.journal_entry.findByPk(req.params.journal_id, {
-      include: [
-        database.user,
-        {
-          model: database.image,
-          include: database.image_source
-        }
-      ]
-    });
-
-    res.render("journal/index", {entry, user: entry.user, image: entry.image})
+    const entry = await database.journal_entry.findByPk(req.params.journal_id, {include: database.user});
+    res.render("journal/index", {entry, user: entry.user.dataValues})
     
   } catch (error) {
     console.log(error.message);

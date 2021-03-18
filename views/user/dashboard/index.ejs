@@ -8,18 +8,9 @@
     <%- include("partials/filter-sort", { user: user }) %>
   </aside>
   <main class="col" id="list-entry-all">
-  <% if (current_user) { %>
-    <% for (let entry of entries) { %>
-      <%# Include Journal Entries %>
-      <%- include("partials/journal-entry", { user, entry, image: entry.image }) %>
-    <% } %>
-  <% } else { %>
-    <% for (let entry of entries) { %>
-      <% if (entry.visible === true) { %>
-        <%# Include Journal Entries %>
-        <%- include("partials/journal-entry", { user, entry, image: entry.image }) %>
-      <% } %>
-    <% } %>
+  <% for (let entry of entries) { %>
+    <%# Include Journal Entries %>
+    <%- include("partials/journal-entry", { user: user, entry: entry }) %>
   <% } %>
   </main>
 </div>
